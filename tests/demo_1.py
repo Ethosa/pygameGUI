@@ -3,8 +3,7 @@
 
 import sys
 
-from pygame import display, image
-import pygame
+from pygame import display, image, QUIT, Surface, time, event, quit
 
 from pygamegui.gui import Manager
 
@@ -23,9 +22,9 @@ class Game:
             display.set_icon(image.load(icon))
 
         self.display = display.set_mode(self.size)
-        self.screen = pygame.Surface((width, height))
+        self.screen = Surface((width, height))
         self.screen = self.screen.convert_alpha()
-        self.clock = pygame.time.Clock()
+        self.clock = time.Clock()
 
         self.manager = Manager(self)
 
@@ -41,9 +40,9 @@ class Game:
             display.update()
 
     def handle_events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
+        for e in event.get():
+            if e.type == QUIT:
+                quit()
                 sys.exit()
         self.manager.event()
 
