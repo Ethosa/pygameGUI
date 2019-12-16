@@ -24,6 +24,7 @@ class View:
         self.shadow = pygame.Surface((width, height)).convert_alpha()
         self.ripple_effect = pygame.Surface((width, height)).convert_alpha()
         self.set_parent(parent)
+        self.view_id = 0
 
         self.shadow.fill((0, 0, 0, 0))
         self.background.fill(background_color)
@@ -129,11 +130,14 @@ class View:
         position = pygame.mouse.get_pos()
         buttons = pygame.mouse.get_pressed()
         self_index = self.parent.views.index(self)
+
+        # True if the view is on top of all.
         is_self = True
         for index, view in enumerate(self.parent.views):
             if index > self_index:
                 if view.get_rect().collidepoint(position):
                     is_self = False
+
         if self.get_rect().collidepoint(position) and is_self:
             if not self.is_hovered:
                 self.is_hovered = 1
@@ -296,7 +300,7 @@ class View:
         """set view borders
 
         Arguments:
-            width {number} -- border width
+            width {int} -- border width
             color {tuple or str} -- border color (supported alpha channel)
         """
         self.border = {
@@ -313,6 +317,11 @@ class View:
         self.border["color"] = pygame.Color(color)
 
     def set_border_width(self, width):
+        """set view borders width
+
+        Arguments:
+            width {int} -- width in pixels
+        """
         self.border["width"] = width
 
     def set_foreground_color(self, color):
