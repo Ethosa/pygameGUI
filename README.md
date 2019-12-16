@@ -14,4 +14,4 @@ Import:
 from pygame import Manager, View
 ```
 
-![alt](https://github.com/Ethosa/pygameGUI/blob/master/screenshots/screenshot1.jpg)
+![alt](https://github.com/Ethosa/pygameGUI/blob/master/hello_world.png)
