@@ -23,7 +23,7 @@ class View:
         self.foreground = pygame.Surface((width, height)).convert_alpha()
         self.shadow = pygame.Surface((width, height)).convert_alpha()
         self.ripple_effect = pygame.Surface((width, height)).convert_alpha()
-        self.parent = parent
+        self.set_parent(parent)
 
         self.shadow.fill((0, 0, 0, 0))
         self.background.fill(background_color)
@@ -74,12 +74,13 @@ class View:
         self.parent.screen.blit(self.background, (self.x, self.y))
         self.parent.screen.blit(self.foreground, (self.x, self.y))
         self.parent.screen.blit(self.ripple_effect, (self.x, self.y))
-        if self.border["width"]:
+        if self.border["width"] and self.parent:
             w = self.border["width"]
-            pygame.draw.rect(self.parent.screen, self.border["color"],
+            pygame.draw.rect(self.screen, self.border["color"],
                              pygame.Rect(self.x-w, self.y-w,
-                                         self.width+w, w+self.height),
+                                         self.width + w, self.height + w),
                              w)
+            self.parent.screen.blit(self.screen, (0, 0))
         if self.is_ripple_effect and self.ripple_color[3]:
             self.ripple_radius += self.width//8 if self.width > self.height else self.height//8
             clr = self.ripple_color
@@ -298,6 +299,12 @@ class View:
         lg.fill_gradient()
         self.background_image = lg.surface.copy()
         self.background = self.background_image
+
+    def set_parent(self, parent):
+        self.parent = parent
+        if self.parent:
+            self.screen = pygame.Surface(self.parent.screen.get_size()).convert_alpha()
+            self.screen.fill((0, 0, 0, 0))
 
     def set_ripple_color(self, color):
         self.ripple_color = pygame.Color(color)

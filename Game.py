@@ -59,6 +59,7 @@ class Game:
 
         def clicked(pos):
             view3.set_gradient((128, 128), pos, "#212121", "#e0e0e0")
+            self.manager.take_screenshot("hello_world.png")
         view3.on_click(clicked)
 
     def render(self):
