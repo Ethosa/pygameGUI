@@ -21,6 +21,10 @@ from pygame import Manager, View
 ![ripple effect](https://github.com/Ethosa/pygameGUI/blob/master/screenshots/gif.gif)
 ![animated view](https://github.com/Ethosa/pygameGUI/blob/master/screenshots/gif2.gif)
 
+## FAQ
+*Q:* Where can I learn to use the library?  
+*A:* You can use the [wiki pages with the documentation](https://github.com/Ethosa/pygameGUI/wiki)
+
 ## Contact:
 social.ethosa@gmail.com
 
