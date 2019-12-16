@@ -74,6 +74,8 @@ class View:
         self.parent.screen.blit(self.background, (self.x, self.y))
         self.parent.screen.blit(self.foreground, (self.x, self.y))
         self.parent.screen.blit(self.ripple_effect, (self.x, self.y))
+
+        # draw borders
         if self.border["width"] and self.parent:
             w = self.border["width"]
             pygame.draw.rect(self.screen, self.border["color"],
@@ -81,6 +83,8 @@ class View:
                                          self.width + w, self.height + w),
                              w)
             self.parent.screen.blit(self.screen, (0, 0))
+
+        # draw ripple effect
         if self.is_ripple_effect and self.ripple_color[3]:
             self.ripple_radius += self.width//8 if self.width > self.height else self.height//8
             clr = self.ripple_color
@@ -162,6 +166,21 @@ class View:
                 if buttons[0]:
                     self.is_focused = 0
                     self.unfocused()
+
+    def is_collide(self, obj):
+        """check collision with point or rect
+
+        Arguments:
+            obj {tuple} -- point (x, y) or rect (x, y, width, height)
+
+        Returns:
+            bool
+        """
+        if isinstance(obj, tuple):
+            if len(obj) == 2:
+                return self.get_rect().collidepoint(obj)
+            elif len(obj) == 4:
+                return self.get_rect().colliderect(pygame.Rect(obj))
 
     def move(self, x, y):
         """moving this view to certain coordinates on the x and y axes
@@ -274,12 +293,23 @@ class View:
                 self.background.blit(background, (x, y))
 
     def set_border(self, width, color):
+        """set view borders
+
+        Arguments:
+            width {number} -- border width
+            color {tuple or str} -- border color (supported alpha channel)
+        """
         self.border = {
             "width": width,
             "color": pygame.Color(color)
         }
 
     def set_border_color(self, color=(255, 255, 255, 255)):
+        """set view border color
+
+        Keyword Arguments:
+            color {tuple} -- border color (default: {(255, 255, 255, 255)})
+        """
         self.border["color"] = pygame.Color(color)
 
     def set_border_width(self, width):
@@ -352,11 +382,26 @@ class View:
         self.shadow_y_offset -= (h - self.height)//2
 
     def set_x(self, x):
+        """move view at x axe
+
+        Arguments:
+            x {number}
+        """
         self.x = x
 
     def set_y(self, y):
+        """move view at y axe
+
+        Arguments:
+            y {number}
+        """
         self.y = y
 
     def set_z(self, z):
+        """move view at z axe
+
+        Arguments:
+            z {number}
+        """
         self.parent.views.remove(self)
         self.parent.views.insert(z, self)

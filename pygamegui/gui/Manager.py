@@ -7,9 +7,11 @@ from pygame import image
 class Manager:
     """This class makes working with views a little easier.
     """
-    def __init__(self, window):
+    def __init__(self, window, autofill=True, autofill_color=(255, 255, 255, 255)):
         self.screen = window.screen
         self.views = []
+        self.autofill = autofill
+        self.autofill_color = autofill_color
 
     def add(self, *views):
         """Adds one or more views to the manager.
@@ -23,6 +25,8 @@ class Manager:
             self.views.append(view)
 
     def draw(self):
+        if self.autofill:
+            self.screen.fill(self.autofill_color)
         for view in self.views:
             view.draw()
 
