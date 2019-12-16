@@ -204,15 +204,18 @@ class View:
         """Fills the background with color if the string is HEX
 
         Arguments:
-            path_or_color {str} -- file path or hex color
+            path_or_color {str} -- file path or hex (or rgba) color
 
         Keyword Arguments:
             mode {str} -- mode for image, can be "resize", "crop" or "inside" (default: {"resize"})
         """
-        if re.match(r"\A#[0-9a-fA-F]{6,8}\Z", path_or_color):
+        if isinstance(path_or_color, str):
+            if re.match(r"\A#[0-9a-fA-F]{6,8}\Z", path_or_color):
+                self.set_background_color(path_or_color)
+            else:
+                self.set_background_image(path_or_color, mode)
+        elif isinstance(path_or_color, tuple):
             self.set_background_color(path_or_color)
-        else:
-            self.set_background_image(path_or_color, mode)
 
     def set_background_color(self, color):
         """Fills the background with color
@@ -276,15 +279,15 @@ class View:
             "color": pygame.Color(color)
         }
 
-    def set_foreground_color(self, color):
-        self.foreground_color = pygame.Color(color)
-        self.foreground.fill(self.foreground_color)
-
     def set_border_color(self, color=(255, 255, 255, 255)):
         self.border["color"] = pygame.Color(color)
 
     def set_border_width(self, width):
         self.border["width"] = width
+
+    def set_foreground_color(self, color):
+        self.foreground_color = pygame.Color(color)
+        self.foreground.fill(self.foreground_color)
 
     def set_gradient(self, pos1, pos2, clr1, clr2):
         """Draws a linear gradient from point pos1 to point pos2
