@@ -6,7 +6,7 @@ import sys
 from pygame import display, image
 import pygame
 
-from pygameGUI.gui import *
+from pygamegui.gui import View, Manager
 
 pygame.init()
 
