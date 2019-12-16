@@ -47,20 +47,6 @@ class Game:
         view.set_ripple_color("#ffffff")
         view1.set_shadow((0, 0, 0, 128), (0, 0), 1.2)
 
-        @view1.on_click
-        def lol(pos):
-            print("view1 clicked")
-
-        @view1.on_hover
-        def lol2():
-            view1.set_background("icon.jpg", "resize")
-            view1.bring_to_front()
-
-        @view1.on_out
-        def lol3():
-            view1.set_background("#33333344")
-            view1.set_z(1)
-
         view3 = View(width=155)
         view3.move(256, 256)
         view3.set_background("#e0e0e0")
@@ -71,9 +57,9 @@ class Game:
 
         self.manager.add(view, view1, view2, view3)
 
-        @view3.on_click
         def clicked(pos):
             view3.set_gradient((128, 128), pos, "#212121", "#e0e0e0")
+        view3.on_click(clicked)
 
     def render(self):
         self.screen.fill((255, 255, 255, 255))
