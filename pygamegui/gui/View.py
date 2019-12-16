@@ -278,7 +278,7 @@ class View:
                 rect = pygame.Rect(center[0] - center_self[0], center[1] - center_self[1],
                                    self.width, self.height)
                 self.background.blit(self.background_image.subsurface(rect), (0, 0))
-            elif mode == "inside":
+            elif mode.startswith("inside"):
                 w, h = self.background_image.get_size()
                 while w > self.width or h > self.height:
                     w //= 2
@@ -288,10 +288,40 @@ class View:
                     w += x
                     h += y
                 w, h = int(w), int(h)
-                if w < self.width:
-                    x = self.width//2 - w//2
-                elif h < self.height:
-                    y = self.height//2 - h//2
+
+                # image x, y calculate
+                if mode.endswith("left"):
+                    x = 0
+                    if h < self.height:
+                        y = self.height//2 - h//2
+                elif mode.endswith("left_top"):
+                    x = y = 0
+                elif mode.endswith("top"):
+                    if w < self.width:
+                        x = self.width//2 - w//2
+                    y = 0
+                elif mode.endswith("right"):
+                    x = self.width - w
+                    if h < self.height:
+                        y = self.height//2 - h//2
+                elif mode.endswith("right_top"):
+                    x = self.width - w
+                    y = 0
+                elif mode.endswith("right_bottom"):
+                    x = self.width - w
+                    y = self.height - h
+                elif mode.endswith("bottom"):
+                    if w < self.width:
+                        x = self.width//2 - w//2
+                    y = self.height - h
+                elif mode.endswith("left_bottom"):
+                    x = 0
+                    y = self.height - h
+                else:
+                    if w < self.width:
+                        x = self.width//2 - w//2
+                    elif h < self.height:
+                        y = self.height//2 - h//2
 
                 background = pygame.transform.smoothscale(self.background_image, (w, h))
                 self.background.blit(background, (x, y))
