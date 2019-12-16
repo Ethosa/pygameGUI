@@ -18,7 +18,8 @@ from pygame import Manager, View
 ```
 
 ![alt](https://github.com/Ethosa/pygameGUI/blob/master/hello_world.png)
-![alt](https://github.com/Ethosa/pygameGUI/blob/master/screenshots/gif.gif)
+![ripple effect](https://github.com/Ethosa/pygameGUI/blob/master/screenshots/gif.gif)
+![animated view](https://github.com/Ethosa/pygameGUI/blob/master/screenshots/gif2.gif)
 
 ## Contact:
 social.ethosa@gmail.com
