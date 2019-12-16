@@ -22,3 +22,6 @@ from pygame import Manager, View
 
 ![alt](https://github.com/Ethosa/pygameGUI/blob/master/hello_world.png)
 ![alt](https://github.com/Ethosa/pygameGUI/blob/master/screenshots/gif.gif)
+
+## Want to support a project?
+You can put a star! :star:
