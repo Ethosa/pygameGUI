@@ -15,4 +15,4 @@ from pygame import Manager, View
 ```
 
 ![alt](https://github.com/Ethosa/pygameGUI/blob/master/hello_world.png)
-[![Watch the video](https://github.com/Ethosa/pygameGUI/blob/master/hello_world.png)](https://youtu.be/watch?v=A_8RtvwuexI)
+[![Watch the video](https://github.com/Ethosa/pygameGUI/blob/master/hello_world.png)](https://www.youtube.com/watch?v=A_8RtvwuexI)
