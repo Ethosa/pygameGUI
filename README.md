@@ -27,5 +27,6 @@ from pygame import Manager, View
 social.ethosa@gmail.com
 
 ## Want to support a project?
-You can put a star! :star:
+You can put a star! :star:  
+You can also open the source and offer new features or talk about bugs. [![Issues](https://img.shields.io/github/issues/Ethosa/pygameGUI)](https://github.com/Ethosa/pygameGUI/issues)
 
