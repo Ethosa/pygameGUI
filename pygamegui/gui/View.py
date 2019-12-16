@@ -230,7 +230,10 @@ class View:
             path_or_color {str} -- file path or hex (or rgba) color
 
         Keyword Arguments:
-            mode {str} -- mode for image, can be "resize", "crop" or "inside" (default: {"resize"})
+            mode {str} -- mode for image, can be "resize", "crop", "inside"
+                "inside right", "inside right_top", "inside right_bottom",
+                "inside left", "inside left_top", "inside left_bottom",
+                "inside top", "inside bottom" (default: {"resize"})
         """
         if isinstance(path_or_color, str):
             if re.match(r"\A#[0-9a-fA-F]{6,8}\Z", path_or_color):
@@ -256,7 +259,10 @@ class View:
             path {str} -- file path
 
         Keyword Arguments:
-            mode {str} -- mode for image, can be "resize", "crop" or "inside" (default: {"resize"})
+            mode {str} -- mode for image, can be "resize", "crop", "inside"
+                "inside right", "inside right_top", "inside right_bottom",
+                "inside left", "inside left_top", "inside left_bottom",
+                "inside top", "inside bottom" (default: {"resize"})
         """
         if path:
             self.background_image = pygame.image.load(path)
@@ -273,9 +279,7 @@ class View:
                     h *= 2
                 if self.background_image.get_size() != (w, h):
                     pygame.transform.smoothscale(self.background_image, (w, h))
-                center = (w//2, h//2)
-                center_self = (self.width//2, self.height//2)
-                rect = pygame.Rect(center[0] - center_self[0], center[1] - center_self[1],
+                rect = pygame.Rect(w//2 - self.width//2, h//2 - self.height//2,
                                    self.width, self.height)
                 self.background.blit(self.background_image.subsurface(rect), (0, 0))
             elif mode.startswith("inside"):
@@ -287,26 +291,22 @@ class View:
                 while w < self.width and h < self.height:
                     w += x
                     h += y
-                w, h = int(w), int(h)
 
                 # image x, y calculate
+                x, y = 0, 0
+                w, h = int(w), int(h)
                 if mode.endswith("left"):
-                    x = 0
                     if h < self.height:
                         y = self.height//2 - h//2
-                elif mode.endswith("left_top"):
-                    x = y = 0
                 elif mode.endswith("top"):
                     if w < self.width:
                         x = self.width//2 - w//2
-                    y = 0
                 elif mode.endswith("right"):
                     x = self.width - w
                     if h < self.height:
                         y = self.height//2 - h//2
                 elif mode.endswith("right_top"):
                     x = self.width - w
-                    y = 0
                 elif mode.endswith("right_bottom"):
                     x = self.width - w
                     y = self.height - h
@@ -315,9 +315,8 @@ class View:
                         x = self.width//2 - w//2
                     y = self.height - h
                 elif mode.endswith("left_bottom"):
-                    x = 0
                     y = self.height - h
-                else:
+                elif mode == "inside":
                     if w < self.width:
                         x = self.width//2 - w//2
                     elif h < self.height:
