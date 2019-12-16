@@ -8,26 +8,40 @@ from .ThreadCreator import ThreadCreator
 
 class Timer:
     def __init__(self):
-        self.is_working = 1
+        self.is_working = True
+        self.is_seconds = True
 
     def after(self, seconds):
+        """waits for the specified time and calls the function
+
+        Arguments:
+            seconds {number} -- time to wait
+        """
         def decorator(callable_object):
             def thread():
-                sleep(seconds)
-                callable_object()
+                sleep(seconds / 1000 if not self.is_seconds else self.every_seconds)
+                if self.is_working:
+                    callable_object()
             ThreadCreator(thread).start()
         return decorator
 
     def after_every(self, start_seconds, every_seconds):
-        self.is_working = 1
+        """waits for the specified time and constantly calls the function
+
+        Arguments:
+            start_seconds {number} -- start time to wait
+            every_seconds {number} -- time to wait
+        """
+        self.is_working = True
 
         def decorator(callable_object):
             def thread():
                 sleep(start_seconds)
                 while self.is_working:
                     callable_object()
-                    sleep(every_seconds)
+                    sleep(every_seconds / 1000 if not self.is_seconds else self.every_seconds)
             ThreadCreator(thread).start()
+        return decorator
 
     def cancel(self):
-        self.is_working = 0
+        self.is_working = False
