@@ -13,7 +13,7 @@ Installation via pip:
 `pip install pygamegui` or `pip install git+https://github.com/Ethosa/pygameGUI.git`  
 Import:
 ```python
-from pygame import Manager, View
+from pygamegui import Manager, View
 ```
 
 ![alt](https://github.com/Ethosa/pygameGUI/blob/master/hello_world.png)
