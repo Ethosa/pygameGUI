@@ -3,11 +3,11 @@
 
 import sys
 
-from pygame import display, image, QUIT, Surface, time, event, quit
+from pygame import display, image, QUIT, Surface, time, event, quit as q, init
 
 from pygamegui.gui import Manager
 
-pygame.init()
+init()
 
 
 class Game:
@@ -42,7 +42,7 @@ class Game:
     def handle_events(self):
         for e in event.get():
             if e.type == QUIT:
-                quit()
+                q()
                 sys.exit()
         self.manager.event()
 
