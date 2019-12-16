@@ -8,9 +8,6 @@ Python user interface framework using pygame library
 [![LGPL3.0](https://img.shields.io/github/license/Ethosa/pygameGUI)](https://github.com/Ethosa/pygameGUI/blob/master/LICENSE)
 [![Issues](https://img.shields.io/github/issues/Ethosa/pygameGUI)](https://github.com/Ethosa/pygameGUI/issues)
 
-
-[![Tweet](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FEthosa%2FpygameGUI)](https://twitter.com/intent/tweet?text=Wow:&url=https://github.com/Ethosa/pygameGUI)
-
 ## Getting start :eyes:
 Installation via pip:  
 `pip install pygamegui`  
@@ -29,4 +26,6 @@ social.ethosa@gmail.com
 ## Want to support a project?
 You can put a star! :star:  
 You can also open the source and offer new features or talk about bugs. [![Issues](https://img.shields.io/github/issues/Ethosa/pygameGUI)](https://github.com/Ethosa/pygameGUI/issues)
+
+[![Tweet](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FEthosa%2FpygameGUI)](https://twitter.com/intent/tweet?text=Wow:&url=https://github.com/Ethosa/pygameGUI)
 
