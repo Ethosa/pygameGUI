@@ -92,7 +92,8 @@ class View:
             if self.ripple_time < 8:
                 pygame.draw.circle(self.ripple_effect,
                                    (clr[0], clr[1], clr[2], 128 - self.ripple_time*16),
-                                   (self.ripple_position[0] - self.x, self.ripple_position[1] - self.y),
+                                   (self.ripple_position[0] - self.x,
+                                    self.ripple_position[1] - self.y),
                                    self.ripple_radius)
                 self.ripple_time += 1
             else:
@@ -108,7 +109,8 @@ class View:
                 if self.out_time < 8:
                     pygame.draw.circle(self.ripple_effect,
                                        (0, 0, 0, 0),
-                                       (self.ripple_position[0] - self.x, self.ripple_position[1] - self.y),
+                                       (self.ripple_position[0] - self.x,
+                                        self.ripple_position[1] - self.y),
                                        self.ripple_radius)
                     self.out_time += 1
                 else:
@@ -197,31 +199,24 @@ class View:
 
     def on_click(self, f):
         self.clicked = f
-        return f
 
     def on_focused(self, f):
         self.focused = f
-        return f
 
     def on_hover(self, f):
         self.hovered = f
-        return f
 
     def on_pressed(self, f):
         self.pressed = f
-        return f
 
     def on_release(self, f):
         self.released = f
-        return f
 
     def on_out(self, f):
         self.outed = f
-        return f
 
     def on_unfocused(self, f):
         self.unfocused = f
-        return f
 
     def set_background(self, path_or_color, mode="resize"):
         """Fills the background with color if the string is HEX
@@ -354,6 +349,11 @@ class View:
         self.border["width"] = width
 
     def set_foreground_color(self, color):
+        """fill view foreground
+
+        Arguments:
+            color {tuple} -- fill color
+        """
         self.foreground_color = pygame.Color(color)
         self.foreground.fill(self.foreground_color)
 
@@ -366,7 +366,8 @@ class View:
             clr1 {tuple} -- first color
             clr2 {tuple} -- second color
         """
-        lg = LinearGradient((self.width, self.height), pos1[::-1], pos2[::-1], pygame.Color(clr1), pygame.Color(clr2))
+        lg = LinearGradient((self.width, self.height), pos1[::-1], pos2[::-1],
+                            pygame.Color(clr1), pygame.Color(clr2))
         lg.fill_gradient()
         self.background_image = lg.surface.copy()
         self.background = self.background_image
