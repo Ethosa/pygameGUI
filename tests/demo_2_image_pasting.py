@@ -6,7 +6,7 @@ import sys
 from pygame import display, image
 import pygame
 
-from pygamegui.gui import Manager
+from pygamegui.gui import View, Manager
 
 pygame.init()
 
@@ -28,6 +28,18 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.manager = Manager(self)
+        view = View(width=255, height=155, background_color=(33, 33, 77, 128))
+        view.move(0, 0)
+        view.set_background("icon.jpg", "inside right")
+        view1 = View(width=255, height=155, background_color=(33, 77, 33, 128))
+        view1.move(0, 155)
+        view1.set_background("icon.jpg", "inside")
+        view2 = View(width=255, height=155, background_color=(77, 33, 33, 128))
+        view2.move(0, 155*2)
+        view2.set_background("icon.jpg", "inside left")
+
+        self.manager.add(view, view1, view2)
+        view2.on_click(lambda pos: self.manager.take_screenshot("hello_world.png"))
 
     def render(self):
         self.manager.draw()
