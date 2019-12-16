@@ -12,7 +12,9 @@ Python user interface framework using pygame library
 [![Tweet](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FEthosa%2FpygameGUI)](https://twitter.com/intent/tweet?text=Wow:&url=https://github.com/Ethosa/pygameGUI)
 
 ## Getting start :eyes:
-Installation: `pip install pygamegui`  
+Installation via pip:  
+`pip install pygamegui`  
+`pip install git+https://github.com/Ethosa/pygameGUI.git`  
 Import:
 ```python
 from pygame import Manager, View
