@@ -20,7 +20,7 @@ class ImageView(View):
         "smooth_more": ImageFilter.SMOOTH_MORE
     }
 
-    def __init__(self, image_path="", width=0, height=0, parent=None):
+    def __init__(self, image_path="", width=0, height=0):
         self.image = Image.open(image_path)
         self.image.convert("RGBA")
         if width and height:

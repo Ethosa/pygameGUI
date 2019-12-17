@@ -3,6 +3,7 @@
 
 import re
 import math
+from copy import copy
 
 import pygame
 from .LinearGradient import LinearGradient
@@ -10,7 +11,7 @@ from ..utils.RoundRect import RoundRect
 
 
 class View:
-    def __init__(self, parent=None, width=100, height=100,
+    def __init__(self, width=100, height=100,
                  background_color=(255, 255, 255, 255)):
         """View constructor
 
@@ -21,16 +22,15 @@ class View:
             background_color {tuple} -- backgrond color (default: {(255, 255, 255, 255)})
         """
         self.background = pygame.Surface((width, height)).convert_alpha()
-        self.foreground = pygame.Surface((width, height)).convert_alpha()
-        self.shadow = pygame.Surface((width, height)).convert_alpha()
-        self.ripple_effect = pygame.Surface((width, height)).convert_alpha()
-        self.set_parent(parent)
-        self.view_id = 0
-
-        self.shadow.fill((0, 0, 0, 0))
-        self.background.fill(background_color)
+        self.foreground = self.background.copy()
         self.foreground.fill((0, 0, 0, 0))
-        self.ripple_effect.fill((0, 0, 0, 0))
+        self.background.fill(background_color)
+        self.background_color = background_color
+        self.parent = None
+
+        self.shadow = self.foreground.copy()
+        self.ripple_effect = self.foreground.copy()
+        self.view_id = 0
 
         self.border = {
             "width": 0,
@@ -70,15 +70,22 @@ class View:
         self.parent.views.remove(self)
         self.parent.views.append(self)
 
+    def copy(self):
+        view = copy(self)
+        view.background = self.background.copy()
+        view.ripple_effect = self.ripple_effect.copy()
+        view.foreground = self.foreground.copy()
+        view.shadow = self.shadow.copy()
+        return view
+
     def draw(self):
         """render shadow, background, foreground, and wave effect
         """
         if self.is_visible:
-            self.parent.screen.blit(self.shadow,
-                                    (self.x+self.shadow_x_offset, self.y+self.shadow_y_offset))
-            self.parent.screen.blit(self.background, (self.x, self.y))
-            self.parent.screen.blit(self.foreground, (self.x, self.y))
-            self.parent.screen.blit(self.ripple_effect, (self.x, self.y))
+            self.parent.screen.blits(((self.shadow, (self.x+self.shadow_x_offset, self.y+self.shadow_y_offset)),
+                                      (self.background, (self.x, self.y)),
+                                      (self.foreground, (self.x, self.y)),
+                                      (self.ripple_effect, (self.x, self.y))), 0)
 
             # draw borders
             if self.border["width"] and self.parent:
@@ -148,14 +155,8 @@ class View:
             if index > self_index:
                 if view.get_rect().collidepoint(position):
                     is_self = False
-        collision = self.get_rect().collidepoint(position)
-        if collision and self.mask and position[0] >= self.x and position[1] >= self.y:
-            collision = self.mask.get_at(
-                (position[0] - self.x - self.width
-                    if position[0] > self.width + self.x else position[0] - self.x,
-                 position[1] - self.y - self.height
-                    if position[1] > self.height + self.y else position[1] - self.y)
-                )
+
+        collision = self.is_collide_rounded(position)
         if collision and is_self:
             if not self.is_hovered:
                 self.is_hovered = 1
@@ -203,6 +204,17 @@ class View:
                 return self.get_rect().collidepoint(obj)
             elif len(obj) == 4:
                 return self.get_rect().colliderect(pygame.Rect(obj))
+
+    def is_collide_rounded(self, position):
+        collision = self.get_rect().collidepoint(position)
+        if collision and self.mask and position[0] >= self.x and position[1] >= self.y:
+            collision = self.mask.get_at(
+                (position[0] - self.x - self.width
+                    if position[0] > self.width + self.x else position[0] - self.x,
+                 position[1] - self.y - self.height
+                    if position[1] > self.height + self.y else position[1] - self.y)
+                )
+        return collision
 
     def move(self, x, y):
         """moving this view to certain coordinates on the x and y axes

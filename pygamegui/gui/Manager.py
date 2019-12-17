@@ -47,7 +47,9 @@ class Manager:
 
     def event(self):
         for view in self.views:
-            view.handle_event()
+            if (view.x < self.window.width and view.y < self.window.height and
+                    view.x+view.width > 0 and view.y+view.height > 0):
+                view.handle_event()
 
     def get_view_by_id(self, view_id):
         """this method find view by it's id
@@ -61,9 +63,7 @@ class Manager:
         if isinstance(view_id, int) and view_id > 0 and view_id < self.last_id:
             for index, view in enumerate(self.views):
                 if view.view_id == view_id:
-                    if (view.x < self.screen.width and view.y < self.screen.height and
-                            view.x+view.width > 0 and view.y+view.height > 0):
-                        return self.views[index]
+                    return self.views[index]
 
     def take_screenshot(self, filename):
         """takes screenshot and save it in file
