@@ -60,6 +60,7 @@ class View:
         self.is_hovered = 0
         self.is_ripple_effect = 0
         self.is_ripple_back = 0
+        self.is_visible = 1
 
     def bring_to_front(self):
         """moves this view to the foreground
@@ -70,55 +71,56 @@ class View:
     def draw(self):
         """render shadow, background, foreground, and wave effect
         """
-        self.parent.screen.blit(self.shadow,
-                                (self.x+self.shadow_x_offset, self.y+self.shadow_y_offset))
-        self.parent.screen.blit(self.background, (self.x, self.y))
-        self.parent.screen.blit(self.foreground, (self.x, self.y))
-        self.parent.screen.blit(self.ripple_effect, (self.x, self.y))
+        if self.is_visible:
+            self.parent.screen.blit(self.shadow,
+                                    (self.x+self.shadow_x_offset, self.y+self.shadow_y_offset))
+            self.parent.screen.blit(self.background, (self.x, self.y))
+            self.parent.screen.blit(self.foreground, (self.x, self.y))
+            self.parent.screen.blit(self.ripple_effect, (self.x, self.y))
 
-        # draw borders
-        if self.border["width"] and self.parent:
-            w = self.border["width"]
-            pygame.draw.rect(self.screen, self.border["color"],
-                             pygame.Rect(self.x-w, self.y-w,
-                                         self.width + w, self.height + w),
-                             w)
-            self.parent.screen.blit(self.screen, (0, 0))
+            # draw borders
+            if self.border["width"] and self.parent:
+                w = self.border["width"]
+                pygame.draw.rect(self.screen, self.border["color"],
+                                 pygame.Rect(self.x-w, self.y-w,
+                                             self.width + w, self.height + w),
+                                 w)
+                self.parent.screen.blit(self.screen, (0, 0))
 
-        # draw ripple effect
-        if self.is_ripple_effect and self.ripple_color[3]:
-            self.ripple_radius += self.width//8 if self.width > self.height else self.height//8
-            clr = self.ripple_color
-            if self.ripple_time < 8:
-                pygame.draw.circle(self.ripple_effect,
-                                   (clr[0], clr[1], clr[2], 128 - self.ripple_time*16),
-                                   (self.ripple_position[0] - self.x,
-                                    self.ripple_position[1] - self.y),
-                                   self.ripple_radius)
-                self.ripple_time += 1
-            else:
-                self.ripple_time = 0
-                self.ripple_radius = 0
-                self.is_ripple_effect = 0
-                if not self.is_ripple_back:
-                    self.ripple_effect.fill((clr[0], clr[1], clr[2], 128-16*6))
-                    self.is_ripple_back = 1
-        else:
-            if self.is_ripple_back and not self.is_pressed:
+            # draw ripple effect
+            if self.is_ripple_effect and self.ripple_color[3]:
                 self.ripple_radius += self.width//8 if self.width > self.height else self.height//8
-                if self.out_time < 8:
+                clr = self.ripple_color
+                if self.ripple_time < 8:
                     pygame.draw.circle(self.ripple_effect,
-                                       (0, 0, 0, 0),
+                                       (clr[0], clr[1], clr[2], 128 - self.ripple_time*16),
                                        (self.ripple_position[0] - self.x,
                                         self.ripple_position[1] - self.y),
                                        self.ripple_radius)
-                    self.out_time += 1
+                    self.ripple_time += 1
                 else:
-                    self.out_time = 0
-                    self.is_ripple_back = 0
+                    self.ripple_time = 0
                     self.ripple_radius = 0
-                    self.ripple_position = (0, 0)
-                    self.ripple_effect.fill((0, 0, 0, 0))
+                    self.is_ripple_effect = 0
+                    if not self.is_ripple_back:
+                        self.ripple_effect.fill((clr[0], clr[1], clr[2], 128-16*6))
+                        self.is_ripple_back = 1
+            else:
+                if self.is_ripple_back and not self.is_pressed:
+                    self.ripple_radius += self.width//8 if self.width > self.height else self.height//8
+                    if self.out_time < 8:
+                        pygame.draw.circle(self.ripple_effect,
+                                           (0, 0, 0, 0),
+                                           (self.ripple_position[0] - self.x,
+                                            self.ripple_position[1] - self.y),
+                                           self.ripple_radius)
+                        self.out_time += 1
+                    else:
+                        self.out_time = 0
+                        self.is_ripple_back = 0
+                        self.ripple_radius = 0
+                        self.ripple_position = (0, 0)
+                        self.ripple_effect.fill((0, 0, 0, 0))
 
     def get_rect(self):
         """getting pygame.Rect from this view
@@ -419,6 +421,9 @@ class View:
         self.shadow = pygame.transform.smoothscale(self.shadow, (w, h))
         self.shadow_x_offset -= (w - self.width)//2
         self.shadow_y_offset -= (h - self.height)//2
+
+    def set_visible(self, v):
+        self.is_visible = v
 
     def set_x(self, x):
         """move view at x axe

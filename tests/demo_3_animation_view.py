@@ -6,7 +6,7 @@ import sys
 from pygame import display, image
 import pygame
 
-from pygamegui.gui import Manager
+from pygamegui.gui import AnimatedView, Manager
 
 pygame.init()
 
@@ -23,10 +23,22 @@ class Game:
             display.set_icon(image.load(icon))
 
         self.display = display.set_mode(self.size)
-        self.screen = pygame.Surface((width, height)).convert_alpha()
+        self.screen = pygame.Surface((width, height))
+        self.screen = self.screen.convert_alpha()
         self.clock = pygame.time.Clock()
 
         self.manager = Manager(self)
+        view = AnimatedView(width=255, height=155, background_color=(33, 33, 77, 128))
+        view.move(0, 0)
+        for i in range(255, 100, -1):
+            view.add_frame((i, i, i, 255))
+        for i in range(100, 255):
+            view.add_frame((i, i, i, 255))
+
+        view.set_ripple_color("#dd7777")
+
+        self.manager.add(view)
+        view.on_click(lambda pos: self.manager.take_screenshot("hello_world.png"))
 
     def render(self):
         self.manager.draw()

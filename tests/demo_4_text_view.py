@@ -6,7 +6,7 @@ import sys
 from pygame import display, image
 import pygame
 
-from pygamegui.gui import Manager
+from pygamegui.gui import TextView, Manager
 
 pygame.init()
 
@@ -23,10 +23,29 @@ class Game:
             display.set_icon(image.load(icon))
 
         self.display = display.set_mode(self.size)
-        self.screen = pygame.Surface((width, height)).convert_alpha()
+        self.screen = pygame.Surface((width, height))
+        self.screen = self.screen.convert_alpha()
         self.clock = pygame.time.Clock()
 
         self.manager = Manager(self)
+        view = TextView(width=255, height=155, background_color=(0, 0, 0, 55))
+        view.move(0, 0)
+
+        view.set_text("heh ..")
+        view.set_text_size(30)
+        view.set_font("Calibri")
+
+        view.set_ripple_color("#dd7777")
+        view.set_shadow((0, 0, 0, 128), scale=1.1)
+
+        self.manager.add(view)
+
+        def click(pos):
+            self.manager.take_screenshot("hello_world.png")
+            view.set_text("FPS: %s\nLOL :D\nclicked position:\n%s" % (self.clock.get_fps(), pos),
+                          color="#7777dd50")
+
+        view.on_click(click)
 
     def render(self):
         self.manager.draw()
