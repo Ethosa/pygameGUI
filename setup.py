@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pygamegui",
-    version="0.0.7",
+    version="0.0.8",
     author="Ethosa",
     author_email="social.ethosa@gmail.com",
     description="Python user interface framework using pygame library",
@@ -32,6 +32,7 @@ setuptools.setup(
     },
     python_requires=">=3",
     install_requires=[
-        "pygame"
+        "pygame",
+        "Pillow"
     ]
 )
