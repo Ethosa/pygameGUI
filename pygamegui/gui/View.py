@@ -6,6 +6,7 @@ import math
 
 import pygame
 from .LinearGradient import LinearGradient
+from ..utils.RoundRect import RoundRect
 
 
 class View:
@@ -35,6 +36,7 @@ class View:
             "width": 0,
             "color": (0, 0, 0, 0)
         }
+        self.mask = None
 
         self.x, self.y = 0, 0
         self.shadow_x_offset, self.shadow_y_offset = (0, 0)
@@ -121,6 +123,11 @@ class View:
                         self.ripple_radius = 0
                         self.ripple_position = (0, 0)
                         self.ripple_effect.fill((0, 0, 0, 0))
+        if self.mask:
+            for y in range(self.height):
+                for x in range(self.width):
+                    if not self.mask.get_at((x, y)):
+                        self.ripple_effect.set_at((x, y), (0, 0, 0, 0))
 
     def get_rect(self):
         """getting pygame.Rect from this view
@@ -141,8 +148,15 @@ class View:
             if index > self_index:
                 if view.get_rect().collidepoint(position):
                     is_self = False
-
-        if self.get_rect().collidepoint(position) and is_self:
+        collision = self.get_rect().collidepoint(position)
+        if collision and self.mask and position[0] > self.x and position[1] > self.y:
+            collision = self.mask.get_at(
+                (position[0] - self.x - self.width
+                    if position[0] > self.width + self.x else position[0] - self.x,
+                 position[1] - self.y - self.height
+                    if position[1] > self.height + self.y else position[1] - self.y)
+                )
+        if collision and is_self:
             if not self.is_hovered:
                 self.is_hovered = 1
                 self.hovered()
@@ -239,6 +253,8 @@ class View:
                 self.set_background_image(path_or_color, mode)
         elif isinstance(path_or_color, tuple):
             self.set_background_color(path_or_color)
+        elif isinstance(path_or_color, pygame.Surface):
+            self.set_background_image(path_or_color, mode)
 
     def set_background_color(self, color):
         """Fills the background with color
@@ -249,7 +265,7 @@ class View:
         self.background_color = pygame.Color(color)
         self.background.fill(self.background_color)
 
-    def set_background_image(self, path, mode="resize"):
+    def set_background_image(self, path, mode="resize", is_path=True):
         """loads image as background
 
         Arguments:
@@ -260,9 +276,13 @@ class View:
                 "inside right", "inside right_top", "inside right_bottom",
                 "inside left", "inside left_top", "inside left_bottom",
                 "inside top", "inside bottom" (default: {"resize"})
+            is_path {bool} -- is path?
         """
         if path:
-            self.background_image = pygame.image.load(path)
+            if is_path:
+                self.background_image = pygame.image.load(path)
+            else:
+                self.background_image = path
             if mode == "resize":
                 self.background.blit(
                     pygame.transform.smoothscale(self.background_image,
@@ -382,6 +402,18 @@ class View:
 
     def set_ripple_color(self, color):
         self.ripple_color = pygame.Color(color)
+
+    def set_round(self, borders=(0, 0, 0, 0)):
+        self.border["width"] = 0
+        surface = pygame.Surface((self.width, self.height)).convert_alpha()
+        RoundRect(surface, borders, (255, 255, 255, 255))
+        self.mask = pygame.mask.from_surface(surface)
+        for y in range(self.height):
+            for x in range(self.width):
+                if not self.mask.get_at((x, y)):
+                    self.background.set_at((x, y), (0, 0, 0, 0))
+                    self.foreground.set_at((x, y), (0, 0, 0, 0))
+                    self.ripple_effect.set_at((x, y), (0, 0, 0, 0))
 
     def set_shadow(self, end_color, offset=(0, 0), scale=1.0, start_color=(0, 0, 0, 0)):
         """draws a diamond-shaped gradient making a shadow

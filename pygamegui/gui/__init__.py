@@ -6,6 +6,7 @@ from .Manager import Manager
 from .View import View
 from .AnimatedView import AnimatedView
 from .TextView import TextView
+from .ImageView import ImageView
 
 if __name__ == '__main__':
-    print(LinearGradient, View, Manager, AnimatedView, TextView)
+    print(LinearGradient, View, Manager, AnimatedView, TextView, ImageView)
