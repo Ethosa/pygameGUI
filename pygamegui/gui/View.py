@@ -149,7 +149,7 @@ class View:
                 if view.get_rect().collidepoint(position):
                     is_self = False
         collision = self.get_rect().collidepoint(position)
-        if collision and self.mask and position[0] > self.x and position[1] > self.y:
+        if collision and self.mask and position[0] >= self.x and position[1] >= self.y:
             collision = self.mask.get_at(
                 (position[0] - self.x - self.width
                     if position[0] > self.width + self.x else position[0] - self.x,
@@ -404,6 +404,12 @@ class View:
         self.ripple_color = pygame.Color(color)
 
     def set_round(self, borders=(0, 0, 0, 0)):
+        """rounds the edges of the view, also affects the collision
+
+        Keyword Arguments:
+            borders {tuple} -- borders corners
+                (lefttop, righttop, rightbottom, leftbottom) (default: {(0, 0, 0, 0)})
+        """
         self.border["width"] = 0
         surface = pygame.Surface((self.width, self.height)).convert_alpha()
         RoundRect(surface, borders, (255, 255, 255, 255))
