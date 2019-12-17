@@ -1,8 +1,8 @@
 <h1 align="center">Bug Report</h1>
 
-name | about | title | labels | assignes
-:--  | :--:  | :--:  | :--: | :--:
-Bug report | Create a report to help us improve | '' | ''| ''
+name | about | title | labels | assignes |
+:--  | :--:  | :--:  | :--: | :--: |
+Bug report | Create a report to help us improve | '' | ''| '' |
 
 **Describe the bug**
 A clear and concise description of what the bug is.
