@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pygamegui",
-    version="0.0.6",
+    version="0.0.7",
     author="Ethosa",
     author_email="social.ethosa@gmail.com",
     description="Python user interface framework using pygame library",
