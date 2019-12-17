@@ -18,6 +18,7 @@ class Manager:
             autofill_color {tuple} -- fill color (default: {(255, 255, 255, 255)})
         """
         self.screen = window.screen
+        self.window = window
         self.views = []
         self.autofill = autofill
         self.autofill_color = autofill_color
@@ -40,7 +41,9 @@ class Manager:
         if self.autofill:
             self.screen.fill(self.autofill_color)
         for view in self.views:
-            view.draw()
+            if (view.x < self.window.width and view.y < self.window.height and
+                    view.x+view.width > 0 and view.y+view.height > 0):
+                view.draw()
 
     def event(self):
         for view in self.views:
@@ -58,7 +61,9 @@ class Manager:
         if isinstance(view_id, int) and view_id > 0 and view_id < self.last_id:
             for index, view in enumerate(self.views):
                 if view.view_id == view_id:
-                    return self.views[index]
+                    if (view.x < self.screen.width and view.y < self.screen.height and
+                            view.x+view.width > 0 and view.y+view.height > 0):
+                        return self.views[index]
 
     def take_screenshot(self, filename):
         """takes screenshot and save it in file
