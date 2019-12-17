@@ -62,13 +62,13 @@ class TextView(View):
                 y += bounds[1] + self.spacing
                 self.lines[y] = [".", 0]
 
-    def calc_x_position(self):
+    def calc_x_position(self, info):
         """Helper method for calculating x coordinate
 
         Returns:
             int -- x coordinate
         """
-        length = self.font.size(self.lines[0])[0]
+        length = self.font.size(info[0])[0]
         align = 0
         if self.xalign == "right":
             align = self.width - length
@@ -106,7 +106,7 @@ class TextView(View):
             self.is_changed = 0
 
         y = 0
-        x = self.calc_x_position()
+        x = self.calc_x_position(self.lines[y])
         for char in self.text:
             bounds = self.font.size(char[0])
             if char[0] != "\n" and bounds[0]+x < self.width:
@@ -126,7 +126,7 @@ class TextView(View):
                 x += bounds[0]
             else:
                 y += bounds[1] + self.spacing
-                x = self.calc_x_position()
+                x = self.calc_x_position(self.lines[y])
 
     def set_align(self, align="left"):
         """setting gravity text
