@@ -25,6 +25,9 @@ from pygamegui import Manager, View
 *Q:* Where can I learn to use the library?  
 *A:* You can use the [wiki pages with the documentation](https://github.com/Ethosa/pygameGUI/wiki)
 
+*Q:* Where can I find code examples?  
+*A:* You can easily find them in the [tests](https://github.com/Ethosa/pygameGUI/tree/master/tests) folder.
+
 ## Contact:
 social.ethosa@gmail.com
 
