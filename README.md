@@ -19,6 +19,7 @@ from pygamegui import Manager, View
 ![alt](https://github.com/Ethosa/pygameGUI/blob/master/hello_world.png)
 ![ripple effect](https://github.com/Ethosa/pygameGUI/blob/master/screenshots/gif.gif)
 ![animated view](https://github.com/Ethosa/pygameGUI/blob/master/screenshots/gif2.gif)
+![textview](https://github.com/Ethosa/pygameGUI/blob/master/screenshots/gif3.gif)
 
 ## FAQ
 *Q:* Where can I learn to use the library?  
