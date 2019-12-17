@@ -17,7 +17,6 @@ class ImageView(View):
         "find_edges": ImageFilter.FIND_EDGES,
         "sharpen": ImageFilter.SHARPEN,
         "smooth": ImageFilter.SMOOTH,
-        "smooth_more": ImageFilter.SMOOTH_MORE,
         "smooth_more": ImageFilter.SMOOTH_MORE
     }
 
