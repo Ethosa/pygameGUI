@@ -30,7 +30,6 @@ class View:
 
         self.shadow = self.foreground.copy()
         self.ripple_effect = self.foreground.copy()
-        self.view_id = 0
 
         self.border = {
             "width": 0,
@@ -38,6 +37,7 @@ class View:
         }
         self.mask = None
 
+        self.view_id = 0
         self.x, self.y = 0, 0
         self.shadow_x_offset, self.shadow_y_offset = (0, 0)
         self.width = width
@@ -47,6 +47,12 @@ class View:
         self.ripple_color = (0, 0, 0, 0)
         self.ripple_time = 0
         self.out_time = 0
+        self.tool_tip_time = 35
+        self.tool_tip_pos = (0, 0)
+        self.tool_tip_text = ""
+        self.tool_tip_color = (0, 0, 0, 255)
+        self.tool_tip_back = (255, 255, 255, 255)
+        self.tool_tip_size = 15
 
         self.clicked = lambda position: None
         self.released = lambda: None
@@ -90,11 +96,17 @@ class View:
             # draw borders
             if self.border["width"] and self.parent:
                 w = self.border["width"]
-                pygame.draw.rect(self.screen, self.border["color"],
+                pygame.draw.rect(self.parent.screen, self.border["color"],
                                  pygame.Rect(self.x-w, self.y-w,
                                              self.width + w, self.height + w),
                                  w)
-                self.parent.screen.blit(self.screen, (0, 0))
+
+            if self.tool_tip_time == 0:
+                pos = pygame.mouse.get_pos()
+                rendered = pygame.font.SysFont("Roboto", self.tool_tip_size).render(self.tool_tip_text,
+                                                                                    True, self.tool_tip_color,
+                                                                                    self.tool_tip_back)
+                self.parent.screen.blit(rendered, (pos[0], pos[1]+30))
 
             # draw ripple effect
             if self.is_ripple_effect and self.ripple_color[3]:
@@ -130,11 +142,13 @@ class View:
                         self.ripple_radius = 0
                         self.ripple_position = (0, 0)
                         self.ripple_effect.fill((0, 0, 0, 0))
-        if self.mask:
-            for y in range(self.height):
-                for x in range(self.width):
-                    if not self.mask.get_at((x, y)):
-                        self.ripple_effect.set_at((x, y), (0, 0, 0, 0))
+
+            # mask draw
+            if self.mask:
+                for y in range(self.height):
+                    for x in range(self.width):
+                        if not self.mask.get_at((x, y)):
+                            self.ripple_effect.set_at((x, y), (0, 0, 0, 0))
 
     def get_rect(self):
         """getting pygame.Rect from this view
@@ -172,11 +186,18 @@ class View:
                         self.is_focused = 1
                         self.focused()
                 self.pressed()
+                self.tool_tip_time = 35
             else:
                 if self.is_clicked:
                     self.is_clicked = 0
                     self.is_pressed = 0
                     self.released()
+            if self.tool_tip_pos != position:
+                self.tool_tip_pos = position
+                self.tool_tip_time = 35
+
+            if self.tool_tip_time > 0:
+                    self.tool_tip_time -= 1
         else:
             if self.is_clicked:
                 self.is_clicked = 0
@@ -184,6 +205,7 @@ class View:
                 self.released()
             if self.is_hovered:
                 self.is_hovered = 0
+                self.tool_tip_time = 35
                 self.outed()
             if self.is_focused:
                 if buttons[0]:
@@ -471,6 +493,12 @@ class View:
         self.shadow = pygame.transform.smoothscale(self.shadow, (w, h))
         self.shadow_x_offset -= (w - self.width)//2
         self.shadow_y_offset -= (h - self.height)//2
+
+    def set_tool_tip(self, text, text_size=15, text_color=(0, 0, 0, 255), back_color=(255, 255, 255, 255)):
+        self.tool_tip_text = text
+        self.tool_tip_color = pygame.Color(text_color)
+        self.tool_tip_back = pygame.Color(back_color)
+        self.tool_tip_size = text_size
 
     def set_visible(self, v):
         self.is_visible = v
