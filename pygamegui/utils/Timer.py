@@ -19,7 +19,7 @@ class Timer:
         """
         def decorator(callable_object):
             def thread():
-                sleep(seconds / 1000 if not self.is_seconds else self.every_seconds)
+                sleep(seconds / 1000 if not self.is_seconds else seconds)
                 if self.is_working:
                     callable_object()
             ThreadCreator(thread).start()
@@ -39,7 +39,7 @@ class Timer:
                 sleep(start_seconds)
                 while self.is_working:
                     callable_object()
-                    sleep(every_seconds / 1000 if not self.is_seconds else self.every_seconds)
+                    sleep(every_seconds / 1000 if not self.is_seconds else every_seconds)
             ThreadCreator(thread).start()
         return decorator
 

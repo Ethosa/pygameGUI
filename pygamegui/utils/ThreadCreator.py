@@ -11,6 +11,7 @@ class ThreadCreator(Thread):
         Thread
     """
     def __init__(self, f, *args, **kwargs):
+        Thread.__init__(self)
         self.f = f
         self.args = args
         self.kwargs = kwargs
