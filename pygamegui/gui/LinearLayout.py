@@ -22,7 +22,13 @@ class LinearLayout(View):
         self.gravity = ["left", "top"]
 
     def add_view(self, view):
+        """Adds a new view to the container.
+
+        Arguments:
+            view {View} -- new view
+        """
         view.x, view.y = self.view_offset[0] + self.x, self.view_offset[1] + self.y
+        view.parent_layout = self
 
         if self.orientation == "vertical":
             self.view_offset[1] += view.height
@@ -30,13 +36,15 @@ class LinearLayout(View):
             self.view_offset[0] += view.width
         self.parent.add(view)
         self.views.append(view)
-        if self.orientation == "vertical":
-            self.calc_vertical_positions()
-        else:
-            self.calc_horizontal_positions()
-        self.calc_visible()
 
-    def calc_vertical_positions(self):
+        # calc positions of all views
+        if self.orientation == "vertical":
+            self._calc_vertical_positions()
+        else:
+            self._calc_horizontal_positions()
+        self._calc_visible()
+
+    def _calc_vertical_positions(self):
         if self.gravity[0] == "left":
             for view in self.views:
                 view.x = self.x
@@ -65,7 +73,7 @@ class LinearLayout(View):
                 view.y = self.y + y
                 y += view.height
 
-    def calc_horizontal_positions(self):
+    def _calc_horizontal_positions(self):
         if self.gravity[0] == "left":
             x = 0
             for view in self.views:
@@ -94,7 +102,7 @@ class LinearLayout(View):
             for view in self.views:
                 view.y = self.y + (self.height - view.height)
 
-    def calc_visible(self):
+    def _calc_visible(self):
         for view in self.views:
             if not (view.x < self.width and view.y < self.height and
                     view.x+view.width > self.x and view.y+view.height > self.y):
@@ -111,7 +119,7 @@ class LinearLayout(View):
     def set_orientation(self, orientation="vertical"):
         self.orientation = orientation
         if orientation == "vertical":
-            self.calc_vertical_positions()
+            self._calc_vertical_positions()
         else:
-            self.calc_horizontal_positions()
-        self.calc_visible()
+            self._calc_horizontal_positions()
+        self._calc_visible()

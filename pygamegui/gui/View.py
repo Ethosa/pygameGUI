@@ -279,7 +279,16 @@ class View:
         Arguments:
             w {int} -- new width
             h {int} -- new height
+
+        P.S.
+            Also, w and h can be strings, however, the view must have parent_layout.
         """
+        if self.parent_layout and isinstance(w, str):
+            if w == "fill_parent":
+                w = self.parent_layout.width
+        if self.parent_layout and isinstance(h, str):
+            if h == "fill_parent":
+                h = self.parent_layout.width
         self.width = w
         self.height = h
         self.shadow = pygame.transform.smoothscale(self.shadow, (w, h))
