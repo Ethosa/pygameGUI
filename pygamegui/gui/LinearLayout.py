@@ -34,6 +34,7 @@ class LinearLayout(View):
             self.calc_vertical_positions()
         else:
             self.calc_horizontal_positions()
+        self.calc_visible()
 
     def calc_vertical_positions(self):
         if self.gravity[0] == "left":
@@ -93,11 +94,13 @@ class LinearLayout(View):
             for view in self.views:
                 view.y = self.y + (self.height - view.height)
 
-    def draw(self):
-        super().draw()
+    def calc_visible(self):
         for view in self.views:
-            if view.is_visible:
-                view.draw()
+            if not (view.x < self.width and view.y < self.height and
+                    view.x+view.width > self.x and view.y+view.height > self.y):
+                view.is_visible = False
+            else:
+                view.is_visible = True
 
     def set_orientation(self, orientation="vertical"):
         self.orientation = orientation
@@ -105,3 +108,4 @@ class LinearLayout(View):
             self.calc_vertical_positions()
         else:
             self.calc_horizontal_positions()
+        self.calc_visible()
