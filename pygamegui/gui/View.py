@@ -27,6 +27,7 @@ class View:
         self.background.fill(background_color)
         self.background_color = background_color
         self.parent = None
+        self.parent_layout = None
 
         self.shadow = self.foreground.copy()
         self.ripple_effect = self.foreground.copy()
@@ -97,16 +98,11 @@ class View:
             if self.border["width"] and self.parent:
                 w = self.border["width"]
                 pygame.draw.rect(self.parent.screen, self.border["color"],
-                                 pygame.Rect(self.x-w, self.y-w,
-                                             self.width + w, self.height + w),
+                                 pygame.Rect(self.x-w,
+                                             self.y-w,
+                                             self.width + w,
+                                             self.height + w),
                                  w)
-
-            if self.tool_tip_time == 0:
-                pos = pygame.mouse.get_pos()
-                rendered = pygame.font.SysFont("Roboto", self.tool_tip_size).render(self.tool_tip_text,
-                                                                                    True, self.tool_tip_color,
-                                                                                    self.tool_tip_back)
-                self.parent.screen.blit(rendered, (pos[0], pos[1]+30))
 
             # draw ripple effect
             if self.is_ripple_effect and self.ripple_color[3]:
@@ -149,6 +145,15 @@ class View:
                     for x in range(self.width):
                         if not self.mask.get_at((x, y)):
                             self.ripple_effect.set_at((x, y), (0, 0, 0, 0))
+
+    def draw_tool_tip(self):
+        if self.tool_tip_text and self.tool_tip_time == 0:
+            pos = pygame.mouse.get_pos()
+            rendered = pygame.font.SysFont("Roboto",
+                                           self.tool_tip_size).render(self.tool_tip_text,
+                                                                      True, self.tool_tip_color,
+                                                                      self.tool_tip_back)
+            self.parent.screen.blit(rendered, (pos[0], pos[1]+30))
 
     def get_rect(self):
         """getting pygame.Rect from this view
@@ -267,6 +272,20 @@ class View:
 
     def on_unfocused(self, f):
         self.unfocused = f
+
+    def resize(self, w, h):
+        """resizes the view using the arguments passed
+
+        Arguments:
+            w {int} -- new width
+            h {int} -- new height
+        """
+        self.width = w
+        self.height = h
+        self.shadow = pygame.transform.smoothscale(self.shadow, (w, h))
+        self.background = pygame.transform.smoothscale(self.background, (w, h))
+        self.foreground = pygame.transform.smoothscale(self.foreground, (w, h))
+        self.ripple_effect = pygame.transform.smoothscale(self.ripple_effect, (w, h))
 
     def set_background(self, path_or_color, mode="resize"):
         """Fills the background with color if the string is HEX
@@ -429,9 +448,9 @@ class View:
         self.background = self.background_image
 
     def set_parent(self, parent):
-        self.parent = parent
-        if self.parent:
-            self.screen = pygame.Surface(self.parent.screen.get_size()).convert_alpha()
+        if parent:
+            self.parent = parent
+            self.screen = pygame.Surface(parent.screen.get_size()).convert_alpha()
             self.screen.fill((0, 0, 0, 0))
 
     def set_ripple_color(self, color):
