@@ -102,6 +102,12 @@ class LinearLayout(View):
             else:
                 view.is_visible = True
 
+    def set_gravity_x(self, gravity="left"):
+        self.gravity[0] = gravity
+
+    def set_gravity_y(self, gravity="top"):
+        self.gravity[1] = gravity
+
     def set_orientation(self, orientation="vertical"):
         self.orientation = orientation
         if orientation == "vertical":
