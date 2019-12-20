@@ -27,6 +27,7 @@ class View:
         self.background_color = background_color
         self.parent = None
         self.parent_layout = None
+        self.copied_back = None
 
         self.shadow = self.foreground.copy()
         self.ripple_effect = self.foreground.copy()
@@ -294,6 +295,8 @@ class View:
         self.background = pygame.transform.smoothscale(self.background, (w, h))
         self.foreground = pygame.transform.smoothscale(self.foreground, (w, h))
         self.ripple_effect = pygame.transform.smoothscale(self.ripple_effect, (w, h))
+        if self.copied_back:
+            self.copied_back = pygame.transform.smoothscale(self.copied_back, (w, h))
 
     def set_background(self, path_or_color, mode="resize"):
         """Fills the background with color if the string is HEX
