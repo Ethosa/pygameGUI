@@ -27,10 +27,11 @@ class TextView(View):
         self.yalign = "top"
         self.copied_back = self.background.copy()
         self.lines = None
+        self.text_color = (0, 0, 0, 255)
         for char in text:
             self.add_char(char)
 
-    def add_char(self, char, color=(0, 0, 0, 255),
+    def add_char(self, char, color=None,
                  is_underline=0, is_bold=0, is_italic=0):
         """Adds one new formatted character to a string
 
@@ -43,6 +44,8 @@ class TextView(View):
             is_bold {number} (default: {0})
             is_italic {number} (default: {0})
         """
+        if not color:
+            color = self.text_color
         self.text.append([char, color,
                           is_underline, is_bold, is_italic])
         self.is_changed = 1
@@ -162,7 +165,7 @@ class TextView(View):
         super().set_background_color(color)
         self.copied_back = self.background.copy()
 
-    def set_char(self, position, char, color=(0, 0, 0, 255),
+    def set_char(self, position, char, color=None,
                  is_underline=0, is_bold=0, is_italic=0):
         """changes character information at a specific position
 
@@ -176,12 +179,14 @@ class TextView(View):
             is_bold {number} (default: {0})
             is_italic {number} (default: {0})
         """
+        if not color:
+            color = self.text_color
         self.text[position] = [char, color,
                                is_underline, is_bold, is_italic]
         self.is_changed = 1
 
     def set_chars(self, start_position, end_position, chars,
-                  color=(0, 0, 0, 255), is_underline=0,
+                  color=None, is_underline=0,
                   is_bold=0, is_italic=0):
         """changes characters in a range
 
@@ -216,7 +221,7 @@ class TextView(View):
                 self.font_info[2] = "sys"
             self.is_changed = 0
 
-    def set_text(self, text, color=(0, 0, 0, 255),
+    def set_text(self, text, color=None,
                  is_underline=0, is_bold=0, is_italic=0):
         """sets new text, removing old
 
@@ -233,13 +238,14 @@ class TextView(View):
         for char in text:
             self.add_char(char, pygame.Color(color), is_underline, is_bold, is_italic)
 
-    def set_text_color(self, color=(0, 0, 0, 255)):
+    def set_text_color(self, color=None):
         """set color at all text
 
         Keyword Arguments:
             color {tuple} -- text color (default: {(0, 0, 0, 255)})
         """
-        color = pygame.COlor(color)
+        color = pygame.Color(color)
+        self.text_color = color
         for i, char in enumerate(self.text):
             self.text[i][1] = color
 
