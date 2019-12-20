@@ -171,7 +171,7 @@ class View:
         is_self = True
         for index, view in enumerate(self.parent.views):
             if index > self_index:
-                if view.get_rect().collidepoint(position):
+                if view.get_rect().collidepoint(position) and view.is_visible:
                     is_self = False
 
         collision = self.is_collide_rounded(position)

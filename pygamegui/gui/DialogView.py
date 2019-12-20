@@ -52,4 +52,5 @@ class DialogView(LinearLayout):
         self.is_visible = True
         for view in self.views:
             view.is_visible = True
+        self._calc_visible()
         self.showed()
