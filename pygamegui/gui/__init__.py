@@ -8,8 +8,9 @@ from .AnimatedView import AnimatedView
 from .TextView import TextView
 from .ImageView import ImageView
 from .LinearLayout import LinearLayout
+from .DialogView import DialogView
 
 if __name__ == '__main__':
     print(LinearGradient, View, Manager,
           AnimatedView, TextView, ImageView,
-          LinearLayout)
+          LinearLayout, DialogView)

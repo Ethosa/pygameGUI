@@ -16,7 +16,6 @@ class View:
         """View constructor
 
         Keyword Arguments:
-            parent {Game} -- (default: {None})
             width {number} -- view width (default: {100})
             height {number} -- view height (default: {100})
             background_color {tuple} -- backgrond color (default: {(255, 255, 255, 255)})
@@ -288,7 +287,7 @@ class View:
                 w = self.parent_layout.width
         if self.parent_layout and isinstance(h, str):
             if h == "fill_parent":
-                h = self.parent_layout.width
+                h = self.parent_layout.height
         self.width = w
         self.height = h
         self.shadow = pygame.transform.smoothscale(self.shadow, (w, h))

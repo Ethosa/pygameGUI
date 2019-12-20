@@ -10,7 +10,6 @@ class LinearLayout(View):
         """View constructor
 
         Keyword Arguments:
-            parent {Game} -- (default: {None})
             width {number} -- view width (default: {100})
             height {number} -- view height (default: {100})
             background_color {tuple} -- backgrond color (default: {(255, 255, 255, 255)})

@@ -8,18 +8,17 @@ from .View import View
 
 
 class TextView(View):
-    def __init__(self, parent=None, width=100, height=100,
+    def __init__(self, width=100, height=100,
                  background_color=(0, 0, 0, 0), text=""):
         """View constructor
 
         Keyword Arguments:
-            parent {Game} -- (default: {None})
             width {number} -- view width (default: {100})
             height {number} -- view height (default: {100})
             background_color {tuple} -- backgrond color (default: {(0, 0, 0, 255)})
             text {str} -- standart text (default: {""})
         """
-        View.__init__(self, parent, width, height, background_color)
+        View.__init__(self, width, height, background_color)
         self.text = []
         self.font = pygame.font.SysFont("Roboto", 12)
         self.font_info = ["Roboto", 12, "sys"]

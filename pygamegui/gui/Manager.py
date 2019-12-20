@@ -44,6 +44,10 @@ class Manager:
             if (view.x < self.window.width and view.y < self.window.height and
                     view.x+view.width > 0 and view.y+view.height > 0):
                 view.draw()
+        for view in self.views:
+            if (view.x < self.window.width and view.y < self.window.height and
+                    view.x+view.width > 0 and view.y+view.height > 0):
+                view.draw_tool_tip()
 
     def event(self):
         for view in self.views:

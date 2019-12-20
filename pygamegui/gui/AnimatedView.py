@@ -8,20 +8,19 @@ from .View import View
 
 
 class AnimatedView(View):
-    def __init__(self, parent=None, width=100, height=100,
+    def __init__(self, width=100, height=100,
                  background_color=(255, 255, 255, 255), frames=[],
                  animation_speed=0.2):
         """View constructor
 
         Keyword Arguments:
-            parent {Game} -- (default: {None})
             width {number} -- view width (default: {100})
             height {number} -- view height (default: {100})
             background_color {tuple} -- backgrond color (default: {(255, 255, 255, 255)})
             frames {list} -- frames for animation (default: {[]})
             animation_speed {number} -- frame rate
         """
-        View.__init__(self, parent, width, height, background_color)
+        View.__init__(self, width, height, background_color)
         self.frames = frames
         self.animation_speed = animation_speed
         self.state = 0.0
