@@ -158,6 +158,10 @@ class TextView(View):
         self.xalign = xalign
         self.yalign = yalign
 
+    def set_background_color(self, color):
+        super().set_background_color(color)
+        self.copied_back = self.background.copy()
+
     def set_char(self, position, char, color=(0, 0, 0, 255),
                  is_underline=0, is_bold=0, is_italic=0):
         """changes character information at a specific position
@@ -228,6 +232,16 @@ class TextView(View):
         self.text = []
         for char in text:
             self.add_char(char, pygame.Color(color), is_underline, is_bold, is_italic)
+
+    def set_text_color(self, color=(0, 0, 0, 255)):
+        """set color at all text
+
+        Keyword Arguments:
+            color {tuple} -- text color (default: {(0, 0, 0, 255)})
+        """
+        color = pygame.COlor(color)
+        for i, char in enumerate(self.text):
+            self.text[i][1] = color
 
     def set_text_size(self, size):
         """sets font size
