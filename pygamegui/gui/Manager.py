@@ -19,7 +19,10 @@ class Manager:
         """
         self.screen = window.screen
         self.window = window
-        self.views = []
+        self.screens = {
+            "Main": []
+        }
+        self.views = self.screens["Main"]
         self.autofill = autofill
         self.autofill_color = autofill_color
         self.last_id = 0
@@ -36,6 +39,10 @@ class Manager:
                 view.view_id = self.last_id
                 self.last_id += 1
             self.views.append(view)
+
+    def add_screen(self, name):
+        if name not in self.screens:
+            self.screens[name] = []
 
     def draw(self):
         if self.autofill:
@@ -68,6 +75,9 @@ class Manager:
             for index, view in enumerate(self.views):
                 if view.view_id == view_id:
                     return self.views[index]
+
+    def set_screen(self, name):
+        self.views = self.screens[name]
 
     def take_screenshot(self, filename):
         """takes screenshot and save it in file
