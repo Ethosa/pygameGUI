@@ -24,6 +24,7 @@ class TextView(View):
         self.font_info = ["Roboto", 12, "sys"]
         self.spacing = 0
         self.xalign = "left"
+        self.yalign = "top"
         self.copied_back = self.background.copy()
         self.lines = None
         for char in text:
@@ -49,17 +50,22 @@ class TextView(View):
     def calc_lines(self):
         """Helper Method for Calculating the Length of Each Line"""
         x = y = 0
-        self.lines = {0: [".", 0]}
+        self.w = self.h = 0
+        self.lines = [[".", 0]]
         for char in self.text:
             bounds = self.font.size(char[0])
             if char[0] != "\n" and bounds[0]+x < self.width:
                 x += bounds[0]
-                self.lines[y][1] += bounds[0]
-                self.lines[y][0] += char[0]
+                self.lines[-1][1] += bounds[0]
+                self.lines[-1][0] += char[0]
+                if bounds[0] > self.w:
+                    self.w += bounds[0]
             else:
                 x = 0
                 y += bounds[1] + self.spacing
-                self.lines[y] = [".", 0]
+                self.lines.append([".", 0])
+                self.h += bounds[1]
+        self.h += bounds[1]
 
     def calc_x_position(self, info):
         """Helper method for calculating x coordinate
@@ -73,6 +79,19 @@ class TextView(View):
             align = self.width - length
         elif self.xalign == "center":
             align = self.width//2 - length//2
+        return align
+
+    def calc_y_position(self):
+        """Helper method for calculating x coordinate
+
+        Returns:
+            int -- x coordinate
+        """
+        align = 0
+        if self.yalign == "bottom":
+            align = self.height - self.h
+        elif self.yalign == "center":
+            align = self.height//2 - self.h//2
         return align
 
     def draw(self):
@@ -104,8 +123,9 @@ class TextView(View):
             self.calc_lines()
             self.is_changed = 0
 
-        y = 0
-        x = self.calc_x_position(self.lines[y])
+        y = self.calc_y_position()
+        current_line = 0
+        x = self.calc_x_position(self.lines[current_line])
         for char in self.text:
             bounds = self.font.size(char[0])
             if char[0] != "\n" and bounds[0]+x < self.width:
@@ -125,15 +145,18 @@ class TextView(View):
                 x += bounds[0]
             else:
                 y += bounds[1] + self.spacing
-                x = self.calc_x_position(self.lines[y])
+                current_line += 1
+                x = self.calc_x_position(self.lines[current_line])
 
-    def set_align(self, align="left"):
+    def set_align(self, xalign="left", yalign="top"):
         """setting gravity text
 
         Keyword Arguments:
-            align {str} -- may be left, center or right (default: {"left"})
+            xalign {str} -- may be left, center or right (default: {"left"})
+            yalign {str} -- may be top, center or bottom (default: {"top"})
         """
-        self.xalign = align
+        self.xalign = xalign
+        self.yalign = yalign
 
     def set_char(self, position, char, color=(0, 0, 0, 255),
                  is_underline=0, is_bold=0, is_italic=0):
