@@ -235,8 +235,9 @@ class TextView(View):
             is_italic {number} (default: {0})
         """
         self.text = []
+        color = pygame.Color(color) if color else self.text_color
         for char in text:
-            self.add_char(char, pygame.Color(color), is_underline, is_bold, is_italic)
+            self.add_char(char, color, is_underline, is_bold, is_italic)
 
     def set_text_color(self, color=None):
         """set color at all text
