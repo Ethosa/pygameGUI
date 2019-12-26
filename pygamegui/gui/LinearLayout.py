@@ -109,6 +109,16 @@ class LinearLayout(View):
             else:
                 view.is_visible = True
 
+    def move(self, dx, dy):
+        super().move(dx, dy)
+
+        # calc positions of all views
+        if self.orientation == "vertical":
+            self._calc_vertical_positions()
+        else:
+            self._calc_horizontal_positions()
+        self._calc_visible()
+
     def set_gravity_x(self, gravity="left"):
         self.gravity[0] = gravity
 
